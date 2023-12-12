@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import { getCurrentPositionAsync } from "@expo-location";
+import { getCurrentPositionAsync } from "expo-location";
 
 import OutlinedButton from "../ui/OutlinedButton";
 import { Colors } from "../../constants/colors";

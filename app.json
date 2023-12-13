@@ -30,12 +30,6 @@
         {
           "cameraPermission": "The app needs accesses your camera to let you take photos of your favorite places and share them with your friends."
         }
-      ],
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow FavoriteSpot to use your location."
-        }
       ]
     ]
   }

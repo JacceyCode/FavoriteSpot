@@ -22,6 +22,9 @@ function LocationPicker() {
   const navigation = useNavigation();
   const route = useRoute();
 
+  const [locationPermissionInformation, requestPermission] =
+    useForegroundPermissions();
+
   useEffect(() => {
     if (isFocused && route.params) {
       const mapPickedLocation = {
@@ -32,10 +35,7 @@ function LocationPicker() {
     }
   }, [route, isFocused]);
 
-  const [locationPermissionInformation, requestPermission] =
-    useForegroundPermissions();
-
-  async function verifyPermission() {
+  async function verifyPermissions() {
     if (
       locationPermissionInformation.status === PermissionStatus.UNDETERMINED
     ) {
@@ -57,7 +57,7 @@ function LocationPicker() {
   }
 
   async function getLocationHandler() {
-    const hasPermission = await verifyPermission();
+    const hasPermission = await verifyPermissions();
 
     if (!hasPermission) {
       return;
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: Colors.primary100,
     borderRadius: 4,
+    overflow: "hidden",
   },
   actions: {
     flexDirection: "row",
@@ -124,6 +125,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    borderRadius: 4,
+    // borderRadius: 4,
   },
 });

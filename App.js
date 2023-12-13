@@ -1,16 +1,54 @@
+import { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import * as SplashScreen from "expo-splash-screen";
 
 import AllPlaces from "./screens/AllPlaces";
 import AddPlace from "./screens/AddPlace";
 import IconButton from "./components/ui/IconButton";
 import { Colors } from "./constants/colors";
 import Map from "./screens/Map";
+import { init } from "./util/database";
 
 const Stack = createNativeStackNavigator();
 
+// Keep the splash screen visible while we fetch resources
+// SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+  const [dbInitialized, setDbInitialized] = useState(false);
+
+  useEffect(() => {
+    const init = async () => {
+      if (dbInitialized) {
+        await SplashScreen.hideAsync();
+      }
+    };
+    init();
+  }, [dbInitialized]);
+
+  useEffect(() => {
+    init()
+      .then(() => {
+        setDbInitialized(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  if (!dbInitialized) {
+    return (
+      <View style={styles.root}>
+        <Text>
+          <ActivityIndicator size="large" color="#00ff00" />;
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <>
       <StatusBar style="dark" />
@@ -53,3 +91,11 @@ export default function App() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
